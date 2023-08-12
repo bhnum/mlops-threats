@@ -1,14 +1,16 @@
 ###
 ### A complete description of a Prefect Deployment for flow 'train'
 ###
-name: train-iris
+name: train
 description: null
-version: 6db4ccf891a8d93f47fa6179b5ff3493
+version: 32ca0f81e3576dd94af531e3f375dc58
 # The work queue that will handle this deployment's runs
 work_queue_name: default
+work_pool_name: null
 tags: []
 parameters: {}
 schedule: null
+is_schedule_active: null
 infra_overrides: {}
 infrastructure:
   type: process
@@ -17,6 +19,7 @@ infrastructure:
   name: null
   command: null
   stream_output: true
+  working_dir: null
   block_type_slug: process
   _block_type_slug: process
 
@@ -34,3 +37,5 @@ parameter_openapi_schema:
   properties: {}
   required: null
   definitions: null
+timestamp: '2023-08-12T17:07:03.343624+00:00'
+triggers: []

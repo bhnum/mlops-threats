@@ -18,6 +18,18 @@ services:
       - 4200:4200
     volumes:
       - models:/mlruns
+      
+  prefect-db:
+    image: postgres:15.4-alpine
+    restart: always
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+      - POSTGRES_DB=prefect
+    ports:
+      - '5432:5432'
+    volumes:
+      - prefect-db:/var/lib/postgresql/data
 
   mlflow:
     build: mlflow
@@ -48,3 +60,4 @@ services:
       - ./monitoring/dashboard.yml:/etc/grafana/provisioning/dashboards/default.yml
 volumes:
   models:
+  prefect-db:

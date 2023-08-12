@@ -1,5 +1,5 @@
 fastapi[all]
 prometheus_fastapi_instrumentator
 mlflow
-sklearn
+scikit-learn
 pandas
