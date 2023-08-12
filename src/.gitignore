@@ -1,0 +1,25 @@
+# Type checking artifacts
+__pycache__/
+.mypy_cache/
+.dmypy.json
+dmypy.json
+.pyre/
+
+# IPython
+profile_default/
+ipython_config.py
+*.ipynb_checkpoints/*
+
+# Environments
+.python-version
+.env
+.venv
+env/
+venv/
+
+# MacOS
+.DS_Store
+
+# Other
+node_modules/
+.angular/
