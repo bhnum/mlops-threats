@@ -7,4 +7,4 @@ RUN pip install -r requirements.txt
 
 EXPOSE 5000
 
-CMD ["sh", "-c", "mlflow server --backend-store-uri sqlite:////mlruns/mlflow.db --default-artifact-root ftp://user:123@artifact --artifacts-destination --host=0.0.0.0"]
+CMD ["sh", "-c", "mlflow server --backend-store-uri sqlite:////mlruns/mlflow.db --default-artifact-root ftp://user:123@artifact --host=0.0.0.0"]
