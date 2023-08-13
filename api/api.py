@@ -1,10 +1,14 @@
+import pandas as pd
+import numpy as np
+
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
 from prometheus_fastapi_instrumentator import Instrumentator
 from mlflow import MlflowClient
 import mlflow.pyfunc
-import pandas as pd
+
+from lemma_tokenizer import LemmaTokenizer
 
 app = FastAPI()
 
@@ -35,16 +39,19 @@ def fetch_latest_version(model_name):
 @app.on_event("startup")
 async def startup():
     instrumentator.expose(app)
+    
+    LemmaTokenizer.download_assets()
 
 
 @app.get("/predict/")
-def model_output(sepal_length: float, sepal_width: float, petal_length: float, petal_width: float):
+def model_output(text: str):
     print("Works I")
-    model_name = 'Unnamed'
+    model_name = 'MultinomialNB'
     model = fetch_latest_version(model_name)
+
     print("Works II")
-    input = pd.DataFrame({"sepal_length": [sepal_length], "sepal_width": [sepal_width], "petal_length": [petal_length], "petal_width": [petal_width]})
+    input = np.array([text])
 
     prediction = model.predict(input)
-    print(prediction)
-    return {"prediction": prediction[0]}
+    print(f'{prediction = }')
+    return {"prediction": prediction[0].item()}

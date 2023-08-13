@@ -18,6 +18,11 @@ services:
       - 4200:4200
     volumes:
       - models:/mlruns
+    x-develop:
+      watch:
+        - action: sync
+          path: .
+          target: /training
       
   prefect-db:
     image: postgres:15.4-alpine

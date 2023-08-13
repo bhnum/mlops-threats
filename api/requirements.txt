@@ -3,3 +3,4 @@ prometheus_fastapi_instrumentator
 mlflow
 scikit-learn
 pandas
+nltk

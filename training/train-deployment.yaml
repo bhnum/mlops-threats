@@ -9,7 +9,9 @@ work_queue_name: default
 work_pool_name: null
 tags: []
 parameters: {}
-schedule: null
+schedule:
+  cron: 0 0 * * *
+  timezone: Asia/Tehran
 is_schedule_active: null
 infra_overrides: {}
 infrastructure:
