@@ -26,22 +26,16 @@ jobs:
         uses: actions/checkout@v2
       - name: Run script
         run: |
-          docker login $REGISTRY -u $REGISTRY_USER -p $REGISTRY_PASSWORD
-          docker build -t "$IMAGE:${GITHUB_SHA:0:7}" .
-          docker push "$IMAGE:${GITHUB_SHA:0:7}"
-        env:
-          REGISTRY: ${{ vars.REGISTRY }}
-          REGISTRY_PASSWORD: ${{ vars.REGISTRY_PASSWORD }}
-          REGISTRY_USER: ${{ vars.REGISTRY_USER }}
-          APP_NAME: api
-          IMAGE: ${{ vars.REGISTRY }}/api
+          docker login ${{ vars.REGISTRY }} -u ${{ vars.REGISTRY_USER }} -p ${{ vars.REGISTRY_PASSWORD }}
+          docker build -t "${{ vars.REGISTRY }}/api:${GITHUB_SHA:0:7}" .
+          docker push "${{ vars.REGISTRY }}/api:${GITHUB_SHA:0:7}"
+
   darkube_deploy:
     needs: build
     container: hamravesh.hamdocker.ir/public/darkube-cli:v1.1
     runs-on: ubuntu-latest
     steps:
       - name: Run script
-        run: darkube deploy --ref master --token ${DARKUBE_DEPLOY_TOKEN} --app-id ${DARKUBE_APP_ID}  --image-tag "${GITHUB_SHA:0:7}" --job-id "$GITHUB_RUN_ID" --stateless-app true
+        run: darkube deploy --ref master --token ${{ vars.API_DARKUBE_DEPLOY_TOKEN }} --app-id ${DARKUBE_APP_ID}  --image-tag "${GITHUB_SHA:0:7}" --job-id "$GITHUB_RUN_ID" --stateless-app true
         env:
-          DARKUBE_DEPLOY_TOKEN: ${{ vars.API_DARKUBE_DEPLOY_TOKEN }}
           DARKUBE_APP_ID: 2346ec93-49cb-4cef-9dcc-33b32e670b61
