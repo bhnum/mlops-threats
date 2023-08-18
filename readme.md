@@ -7,6 +7,7 @@ An application for detection of violent threats in online discussions and forums
  - Simple web user interface
  - Logging and monitoring dashboard
 
+Documentations are available [here](docs/readme.md).
 This repository has been created using [the MLOps Platform Skeleton here](https://github.com/dpleus/mlops)
 
 ## Overview
