@@ -17,3 +17,8 @@ if st.button("Get response"):
 
     data = get_api(params)
     st.write(data)
+
+    if b'1' in data:
+        st.text('Offensive text')
+    else:
+        st.text('Not offensive')

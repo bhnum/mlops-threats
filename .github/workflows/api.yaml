@@ -1,0 +1,42 @@
+name: api ci/cd
+
+on:
+  push:
+    branches: [ main ]
+    paths:
+      - 'api/**'
+      - '.github/workflows/api.yml'
+  pull_request:
+    branches: [ main ]
+    paths:
+      - 'api/**'
+      - '.github/workflows/api.yml'
+  workflow_dispatch:
+
+
+defaults:
+  run:
+    working-directory: api
+  
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+      - name: Run script
+        run: |
+          docker login ${{ vars.REGISTRY }} -u ${{ vars.REGISTRY_USER }} -p ${{ vars.REGISTRY_PASSWORD }}
+          docker build -t "${{ vars.REGISTRY }}/api:${GITHUB_SHA:0:7}" .
+          docker push "${{ vars.REGISTRY }}/api:${GITHUB_SHA:0:7}"
+
+  darkube_deploy:
+    needs: build
+    container: hamravesh.hamdocker.ir/public/darkube-cli:v1.1
+    runs-on: ubuntu-latest
+    steps:
+      - name: Run script
+        run: darkube deploy --ref master --token ${{ vars.API_DARKUBE_DEPLOY_TOKEN }} --app-id ${DARKUBE_APP_ID}  --image-tag "${GITHUB_SHA:0:7}" --job-id "$GITHUB_RUN_ID" --stateless-app true
+        env:
+          DARKUBE_APP_ID: 2346ec93-49cb-4cef-9dcc-33b32e670b61

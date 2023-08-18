@@ -30,28 +30,26 @@ def fetch_latest_model():
 
 
 def fetch_latest_version(model_name):
-    model = mlflow.pyfunc.load_model(
-        model_uri=f"models:/{model_name}/Production"
-    )
+    model = mlflow.pyfunc.load_model(model_uri=f"models:/{model_name}/Production")
     return model
 
 
 @app.on_event("startup")
 async def startup():
     instrumentator.expose(app)
-    
+
     LemmaTokenizer.download_assets()
 
 
 @app.get("/predict/")
 def model_output(text: str):
     print("Works I")
-    model_name = 'MultinomialNB'
+    model_name = "MultinomialNB"
     model = fetch_latest_version(model_name)
 
     print("Works II")
     input = np.array([text])
 
     prediction = model.predict(input)
-    print(f'{prediction = }')
+    print(f"{prediction = }")
     return {"prediction": prediction[0].item()}
