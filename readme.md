@@ -113,3 +113,10 @@ Security - of course. Authentication, SSL encryption, API authentication and wha
 Good example using nginx. [Example](https://towardsdatascience.com/deploy-mlflow-with-docker-compose-8059f16b6039
 )
 
+## References
+
+### Threat Corpus Dataset
+
+Hammer, H. L., Riegler, M. A., Øvrelid, L. & Veldal, E. (2019). "THREAT: A Large Annotated Corpus for Detection of Violent Threats". 7th IEEE International Workshop on Content-Based Multimedia Indexing.
+
+Wester, A. L., Øvrelid, L., Velldal, E., & Hammer, H. L. (2016). "Threat detection in online discussions". Proceedings of the 7th Workshop on Computational Approaches to Subjectivity, Sentiment and Social Media Analysis.
