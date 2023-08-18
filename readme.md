@@ -1,21 +1,28 @@
-# [MLOps Platform Skeleton](https://github.com/dpleus/mlops)
-This repository contains a simplified MLOps platform (including training, serving and monitoring). The goal of this 
-tutorial was to show what individual services do and how they work together.
-Therefore, the code was kept to a minimum and everything was bundled in docker compose.
-The repo can be used as a skeleton for more advanced project.
- 
-This project was inspired by the great [MLOps Zoomcamp](https://github.com/DataTalksClub/mlops-zoomcamp). 
+# Violent threat detection application
+
+An application for detection of violent threats in online discussions and forums. This project includes
+ - Training workflow for a multinomial Naive Bayes classifier
+ - Model test validation and tracking
+ - Prediction and monitoring APIs + Swagger documentation
+ - Simple web user interface
+ - Logging and monitoring dashboard
+
+This repository has been created using [the MLOps Platform Skeleton here](https://github.com/dpleus/mlops)
 
 ## Overview
-![alt text](readme/mlops.png "Title")
+![Project structure](readme/project-structure.png "Project structure")
+
 The full setup consists of three steps:
-1) Training - A training script trains a model for the Iris dataset with sklearn, training is orchestrated by prefect and the models metrics and artifacts (the actual models) are uploaded to mlflow. 
+1) Training - A training script trains a model for the Threat dataset with sklearn, training is orchestrated by prefect and the models metrics and artifacts (the actual models) are uploaded to mlflow. 
+
 2) Serving - The model is pulled and FastAPI delivers the prediction, a streamlit app serves as the user interface.
+
 3) Monitoring - Metrics about the API usage/performance are pushed to Prometheus/Grafana and shown in a dashboard.
 
 The individual services are packaged as docker containers and setup with docker compose.
 
 ## How to use
+
 **Prerequisite**: Install Docker (Windows: Docker Desktop)
 
 **Download repository from GitHub**
@@ -41,7 +48,9 @@ Run deployment in Prefect UI, deploy model artifacts in mlflow, tag it with "pro
 **Note**: The UI will only work if there is one "production" model in mlflow.
 
 ## Services
+
 ### 1) Docker and docker compose
+
 `docker-compose.yaml` contains the definitions for all services. 
 For every service it contains the docker image (either through `build` if based on a Dockerfile, or through `image` if a remote image). 
 Also it opens the relevant ports within your "docker compose network", so that the services can communicate with each other. 
@@ -50,11 +59,10 @@ Additionally, a common volume for all containers that use mlflow is created and 
 To initialize all services the command `docker compose up` can be used from the project folder.
 
 ### 2+3) Training script and prefect
+
 The training script and prefect (for orchestration) are packaged into one service. 
 
-The **training script** is placed under `training/model_training.py`. It is relatively simple script, it downloads the Iris
-dataset and applies a simple RandomForrestClassifier from sklearn. This learning pipeline is not optimized in any form, 
-the main goal was to keep it simple. 
+The **training script** is placed under `training/model_training.py`.
 
 The `train` function is wrapped into an `mlflow` flow operator. Also, it uses mlflow autolog.
 
@@ -76,6 +84,7 @@ The **Dockerfile** ultimately glues these components together. It
 
 
 ### 4) FastAPI
+
 **FastAPI** is a framework for high-performance API. In this project I implemented a `/predict` endpoint. If that endpoint is queried
 it will download the latest model from mlflow and output the prediction. Additionally, **prometheus_fastapi_instrumentator** scrapes events and sends them to Prometheus.
 
@@ -83,6 +92,7 @@ it will download the latest model from mlflow and output the prediction. Additio
 no model or there are multiple models.
 
 ### 5+6) Prometheus/Grafana
+
 **Prometheus** open source monitoring system. **Grafana** is a dashboarding platform. In short, Prometheus receives the data, while Grafana puts a dashboard on top.
 For this project, I used the provided images and just added a few configuration files:
 
@@ -94,9 +104,11 @@ For this project, I used the provided images and just added a few configuration 
 
 This part was heavily inspired by https://github.com/Kludex/fastapi-prometheus-grafana
 ### 7) Streamlit
+
 **Streamlit** is a Python library to rapidly build UIs. The app is very simple and only passes input to the API to retrieve results.
 
 ## Limitations
+
 **Multiple host machines: Kubernetes**
 
 This project is meant to be deployed on a single host machine. In practice, you might want to use Kubernetes to deploy it 
